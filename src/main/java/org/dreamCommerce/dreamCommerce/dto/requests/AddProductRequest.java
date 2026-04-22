@@ -1,5 +1,9 @@
 package org.dreamCommerce.dreamCommerce.dto.requests;
 
-public class AddProductRequest {
+import lombok.Data;
 
+@Data
+public class AddProductRequest {
+    private String name;
+    private String description;
 }
