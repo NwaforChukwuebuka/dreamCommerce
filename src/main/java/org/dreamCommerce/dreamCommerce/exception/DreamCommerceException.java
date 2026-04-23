@@ -1,4 +1,4 @@
-package org.dreamCommerce.dreamCommerce;
+package org.dreamCommerce.dreamCommerce.exception;
 
 public class DreamCommerceException extends RuntimeException {
     public DreamCommerceException(String message) {

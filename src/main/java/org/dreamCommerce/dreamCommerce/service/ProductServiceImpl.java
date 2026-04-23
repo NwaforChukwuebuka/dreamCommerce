@@ -1,7 +1,8 @@
 package org.dreamCommerce.dreamCommerce.service;
 
 import lombok.RequiredArgsConstructor;
-import org.dreamCommerce.dreamCommerce.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.dreamCommerce.dreamCommerce.exception.ResourceNotFoundException;
 import org.dreamCommerce.dreamCommerce.data.models.Product;
 import org.dreamCommerce.dreamCommerce.data.repositories.ProductRepository;
 import org.dreamCommerce.dreamCommerce.dto.requests.AddProductRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -29,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public UpdateProductResponse updateProduct(String productId, UpdateProductRequest updateProductRequest) {
-        Product product = productRepository.findById(Long.valueOf(productId)).orElseThrow(() -> new ResourceNotFoundException(
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(
                 String.format("Product with id %s not found", productId)
         ));
 

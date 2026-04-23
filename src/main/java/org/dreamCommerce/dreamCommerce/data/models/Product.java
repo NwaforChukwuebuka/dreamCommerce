@@ -9,8 +9,9 @@ import java.util.List;
 @Data
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", length = 36, nullable = false)
+    private String id;
     private String name;
     private String description;
     @ElementCollection

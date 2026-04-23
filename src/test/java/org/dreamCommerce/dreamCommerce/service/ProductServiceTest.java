@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,12 +39,12 @@ public class ProductServiceTest {
 
         Product productToSave = new Product();
         Product savedProduct = new Product();
-        savedProduct.setId(1L);
+        savedProduct.setId(UUID.randomUUID().toString());
         savedProduct.setName("Laptop");
         savedProduct.setDescription("A high-end gaming laptop");
 
         AddProductResponse expectedResponse = new AddProductResponse();
-        expectedResponse.setId(1L);
+        expectedResponse.setId(savedProduct.getId());
 
         Mockito.when(modelMapper.map(any(AddProductRequest.class), eq(Product.class))).thenReturn(productToSave);
         Mockito.when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
@@ -60,26 +61,26 @@ public class ProductServiceTest {
 
     @Test
     void testCanUpdateProduct(){
-        String productId = "1000";
+        String productId = UUID.randomUUID().toString();
         UpdateProductRequest updateProductRequest = new UpdateProductRequest();
-        updateProductRequest.setName("New Name");
+        updateProductRequest.setName("Chocolate");
 
         Product existingProduct = new Product();
-        existingProduct.setId(1000L);
+        existingProduct.setId(productId);
 
         Product updatedProduct = new Product();
-        updatedProduct.setId(1000L);
-        updatedProduct.setName("New Name");
+        updatedProduct.setId(productId);
+        updatedProduct.setName("Chocolate");
 
         UpdateProductResponse expectedResponse = new UpdateProductResponse();
-        expectedResponse.setId(1000L);
+        expectedResponse.setId(productId);
 
-        Mockito.when(productRepository.findById(1000L)).thenReturn(Optional.of(existingProduct));
+        Mockito.when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         Mockito.when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
         Mockito.when(modelMapper.map(any(Product.class), eq(UpdateProductResponse.class))).thenReturn(expectedResponse);
 
         UpdateProductResponse updateProductResponse= productService.updateProduct(productId, updateProductRequest);
         assertThat(updateProductResponse).isNotNull();
-        assertThat(updateProductResponse.getId()).isEqualTo(Long.valueOf(productId));
+        assertThat(updateProductResponse.getId()).isEqualTo(productId);
     }
 }
